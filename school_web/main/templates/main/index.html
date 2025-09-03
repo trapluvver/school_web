@@ -1,0 +1,124 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+
+{% block title%}
+{{ title }}
+{% endblock %}
+
+{% block carousel%}  <!-- Слайдер с картинками -->
+<div class="first_img">
+<img src="{% static 'main/images/slogan.png' %}" class = 'first_img' alt="Слоган">
+</div>
+{% endblock %}
+
+<!-- {% block slider %}
+    <div id="all">
+        <input checked type="radio" name="respond" id="desktop">
+        <article id="slider">
+            <input checked type="radio" name="slider" id="switch1">
+            <input type="radio" name="slider" id="switch2">
+            <input type="radio" name="slider" id="switch3">
+            <input type="radio" name="slider" id="switch4">
+            <div id="slides">
+                <div id="overflow">
+                    <div class="image">
+                        <article><img src="{% static 'main/images/slogan.png' %}" class = 'first_img' alt="Слоган"></article>
+                        <article><img src="{% static 'main/images/slogan.png' %}" class = 'first_img' alt="Слоган"></article>
+                        <article><img src="{% static 'main/images/slogan.png' %}" class = 'first_img' alt="Слоган"></article>
+                        <article><img src="{% static 'main/images/slogan.png' %}" class = 'first_img' alt="Слоган"></article>
+                    </div>
+                </div>
+            </div>
+            <div id="controls">
+                <label for="switch1"></label>
+                <label for="switch2"></label>
+                <label for="switch3"></label>
+                <label for="switch4"></label>
+            </div>
+
+            <div id="active">
+                <label for="switch1"></label>
+                <label for="switch2"></label>
+                <label for="switch3"></label>
+                <label for="switch4"></label>
+            </div>
+        </article>
+    </div>
+{% endblock %} -->
+
+
+{% block about %}
+<h2 class="selection-title">О нашей школе</h2>
+<p class="about-text">
+    МБОУ СОШ №32 — это современное образовательное учреждение, где мы стремимся создать все условия для гармоничного развития личности.
+    Наша школа оснащена современными классами, лабораториями, спортивными залами и библиотекой.
+    Мы гордимся своими учениками и преподавателями, которые вместе создают атмосферу творчества и сотрудничества.
+</p>
+{% endblock %}
+
+{% block news %}
+<h2 class="selection-title">Новости</h2>
+<div class="news-grid">
+    <div class="news-card">
+        <img src="{% static 'main/images/news_one.jpg'%}" class="news-image" alt="Мошенничество в сети">
+        <div class="news-content">
+            <h3 class="news-title"> Как не стать жертвой телефонных мошенников </h3>
+            <span class="news-date"><i class="far fa-calendar-alt"></i> 22 августа 2025 </span>
+            <p>В связи с участившимися случаями телефонного мошенничества, администрация МБОУ СОШ №32 г.
+                Пензы напоминает о важности соблюдения правил цифровой безопасности.</p>
+        </div>
+    </div>
+</div>
+<div class="news-grid">
+    <div class="news-card">
+        <img src="{% static 'main/images/news_one.jpg'%}" class="news-image" alt="Мошенничество в сети">
+        <div class="news-content">
+            <h3 class="news-title"> Проверка 1 </h3>
+            <span class="news-date"><i class="far fa-calendar-alt"></i> 22 августа 2025 </span>
+            <p>В связи с участившимися случаями телефонного мошенничества, администрация МБОУ СОШ №32 г.
+                Пензы напоминает о важности соблюдения правил цифровой безопасности.</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+<!-- Карусель
+    <div class="container">
+        <h2 class="selection-title">Школьная жизнь</h2>
+        <div class="carpusel-container">
+            <div class="carousel">
+                <div class="carousel-item">
+                    <img src="{% static 'main/images/slogan.png' %}" class = 'first_img' alt="Слоган">
+                    <div class="carousel-caption">
+                        <h3 class="carousel-title">Учебный процесс</h3>
+                        <p class="carousel-description">Интерактивные занятия с использованием современных технологий</p>
+                    </div>
+                </div>
+               <div class="carousel-item">
+                    <img src="{% static 'main/images/slogan.png' %}" class = 'first_img' alt="Слоган">
+                    <div class="carousel-caption">
+                        <h3 class="carousel-title">Библиотека</h3>
+                        <p class="carousel-description">Богатый выбор литературы для обучения и внеклассного чтения</p>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control prev">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="carousel-control next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+
+            <div class="carousel-indicators">
+                <div class="indicator active"></div>
+                <div class="indicator"></div>
+                <div class="indicator"></div>
+                <div class="indicator"></div>
+                <div class="indicator"></div>
+            </div>
+
+        </div>
+    </div>
+    -->

@@ -5,14 +5,14 @@
 {% block title%}
 {{ title }}
 {% endblock %}
-
-{% block carousel%}  <!-- Слайдер с картинками -->
+<!--
+{% block carousel%}
 <div class="first_img">
 <img src="{% static 'main/images/slogan.png' %}" class = 'first_img' alt="Слоган">
 </div>
 {% endblock %}
 
-<!-- {% block slider %}
+{% block slider %}
     <div id="all">
         <input checked type="radio" name="respond" id="desktop">
         <article id="slider">
@@ -47,7 +47,6 @@
     </div>
 {% endblock %} -->
 
-
 {% block about %}
 <h2 class="selection-title">О нашей школе</h2>
 <p class="about-text">
@@ -58,30 +57,43 @@
 {% endblock %}
 
 {% block news %}
-<h2 class="selection-title">Новости</h2>
-<div class="news-grid">
-    <div class="news-card">
-        <img src="{% static 'main/images/news_one.jpg'%}" class="news-image" alt="Мошенничество в сети">
-        <div class="news-content">
-            <h3 class="news-title"> Как не стать жертвой телефонных мошенников </h3>
-            <span class="news-date"><i class="far fa-calendar-alt"></i> 22 августа 2025 </span>
-            <p>В связи с участившимися случаями телефонного мошенничества, администрация МБОУ СОШ №32 г.
-                Пензы напоминает о важности соблюдения правил цифровой безопасности.</p>
+<div class="container-news">
+    <h2 class="selection-title">Новости</h2>
+    <div class="news-grid">
+        <div class="news-card">
+            <img src="{% static 'main/images/news_one.jpg'%}" class="news-image" alt="Мошенничество в сети">
+            <div class="news-content">
+                <h3 class="news-title"> Как не стать жертвой телефонных мошенников </h3>
+                <span class="news-date"><i class="far fa-calendar-alt"></i> 22 августа 2025 </span>
+                <p>В связи с участившимися случаями телефонного мошенничества, администрация МБОУ СОШ №32 г.
+                    Пензы напоминает о важности соблюдения правил цифровой безопасности.</p>
+            </div>
+        </div>
+        <div class="news-card">
+            <img src="{% static 'main/images/news_one.jpg'%}" class="news-image" alt="Мошенничество в сети">
+            <div class="news-content">
+                <h3 class="news-title"> Проверка 1 </h3>
+                <span class="news-date"><i class="far fa-calendar-alt"></i> 22 августа 2025 </span>
+                <p>В связи с участившимися случаями телефонного мошенничества, администрация МБОУ СОШ №32 г.
+                    Пензы напоминает о важности соблюдения правил цифровой безопасности.</p>
+            </div>
+        </div>
+        <div class="news-card">
+            <img src="{% static 'main/images/news_one.jpg'%}" class="news-image" alt="Мошенничество в сети" style="background: linear-gradient(to bottom, #2c3e50, #fd746c);">
+            <div class="news-content">
+                <h3 class="news-title"> Проверка 2 </h3>
+                <span class="news-date"><i class="far fa-calendar-alt"></i> 3 сентября 2025 </span>
+                <p>В связи с участившимися случаями телефонного мошенничества, администрация МБОУ СОШ №32 г.
+                    Пензы напоминает о важности соблюдения правил цифровой безопасности.</p> <!-- Сделать ограничения по тексту -->
+            </div>
         </div>
     </div>
-</div>
-<div class="news-grid">
-    <div class="news-card">
-        <img src="{% static 'main/images/news_one.jpg'%}" class="news-image" alt="Мошенничество в сети">
-        <div class="news-content">
-            <h3 class="news-title"> Проверка 1 </h3>
-            <span class="news-date"><i class="far fa-calendar-alt"></i> 22 августа 2025 </span>
-            <p>В связи с участившимися случаями телефонного мошенничества, администрация МБОУ СОШ №32 г.
-                Пензы напоминает о важности соблюдения правил цифровой безопасности.</p>
-        </div>
-    </div>
-</div>
 
+
+    <div class="news-grid">
+
+    </div>
+</div>
 {% endblock %}
 
 <!-- Карусель
@@ -122,3 +134,34 @@
         </div>
     </div>
     -->
+{% block advt %}
+<div class="container-advt">
+    <h2 class="selection-title">Объявления</h2>
+    <div class="news-grid">
+        <div class="news-card">
+            <img src="{% static 'main/images/news_one.jpg'%}" class="news-image" alt="Требуется ...">
+            <div class="news-content">
+                <h3 class="news-title"> Открыта вакансия </h3>
+                <span class="news-date"><i class="far fa-calendar-alt"></i> 5 сентября 2025 </span>
+                <p>В связи с освобождением ваканстног места</p>
+            </div>
+        </div>
+        <div class="news-card">
+            <img src="{% static 'main/images/news_one.jpg'%}" class="news-image" alt="Требуется ...">
+            <div class="news-content">
+                <h3 class="news-title"> Внимание! </h3>
+                <span class="news-date"><i class="far fa-calendar-alt"></i> 5 сентября 2025 </span>
+                <p>В связи с освобождением ваканстног места</p>
+            </div>
+        </div>
+        <div class="news-card">
+            <img src="{% static 'main/images/news_one.jpg'%}" class="news-image" alt="Требуется ...">
+            <div class="news-content">
+                <h3 class="news-title"> Внимание! </h3>
+                <span class="news-date"><i class="far fa-calendar-alt"></i> 5 сентября 2025 </span>
+                <p>В связи с освобождением ваканстног места</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

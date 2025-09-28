@@ -19,8 +19,42 @@
             <p class ="school-slogan">Современное образование с уважением к традициям</p>
     </header>
 
+
     <nav class="nav">
-        <a href="/"> Меню </a>
+        <div class="dropdown">
+            <a href="/" class="dropdown-toggle"> Меню </a>
+            <div class="dropdown-content">
+                <div class="dropdown-column">
+                    <h3>Сведения об образовательной организации</h3>
+                    <a href="/">Основные сведения</a>
+                    <a href="/">Структура и органы управления</a>
+                    <a href="/">Документы</a>
+                    <a href="/">Руководство</a>
+                    <a href="/">Педагогический состав</a>
+                    <a href="/">Материально-техническое обеспечение</a>
+                    <a href="/">Платные образовательные услуги</a>
+                    <a href="/">Финансово-хозяйственная деятельность</a>
+                    <a href="/">Вакантные места для приема (перевода)</a>
+                    <a href="/">Стипендии и иные виды материальной поддержки</a>
+                    <a href="/">Международное сотрудничество</a>
+                    <a href="/">Организация питания в образовательной организации</a>
+                </div>
+                <div class="dropdown-column">
+                    <h3>ЕГЭ и ОГЭ</h3>
+                    <a href="/">Программа подготовки ЕГЭ</a>
+                    <a href="/">Программа подготовки ОГЭ</a>
+                    <a href="/">Расписание экзаменов ЕГЭ</a>
+                    <a href="/">Расписание экзаменов ОГЭ</a>
+                </div>
+                <div class="dropdown-column">
+                    <h3>Полезные ссылки</h3>
+                    <a href="/">Сведения об образовательной организации</a>
+                    <a href="/">Структура и органы управления</a>
+                    <a href="/">Документы</a>
+                </div>
+            </div>
+        </div>
+
         <a href="/"> Главная </a>
         <a href="/"> Основные сведения </a>
         <a href="/"> Родителям и учащимся </a>
@@ -38,19 +72,14 @@
         {% block news %} {% endblock %}
     </div>
 
+    <div class="advt">
+        {% block advt %} {% endblock %}
+    </div>
 
-    <!-- <div class="slider">
-        {% block slider %} {% endblock %}
-    </div> -->
-
-
-
-
-  <div class="container main-content">
-      {% block content %} {% endblock %}
-  </div>
 
   <!-- Подключение Bootstrap JS -->
+    <script src="{% static 'main/js/drop.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

@@ -28,3 +28,13 @@ def create(request):
     }
     return render(request, 'main/create.html', context)
 
+def teacher_report(self, request):
+    teachers = Teacher.objects.all().order_by('name')
+
+    context = {
+        'teachers': teachers,
+        'title': 'Отчет о преподавательском составе',
+        **self.admin_site.each_context(request)
+    }
+
+    return render(request, 'admin/teachers/simple_report.html', context)

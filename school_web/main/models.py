@@ -18,9 +18,9 @@ class Teacher(models.Model):
     full_name = models.CharField(max_length=35, db_column='FIO')
     post = models.CharField(max_length=20, db_column='Post')
     category = models.CharField(max_length=15, null=True, blank=True, db_column='Category')
-    education = models.CharField(max_length=70, db_column='Education')
-    lesson = models.CharField(max_length=30, db_column='Lesson') # Нужно увеличить размерность
-    up_category = models.CharField(max_length=30, null=True, blank=True, db_column='Up_category')
+    education = models.CharField(max_length=70, db_column='Education', null=True, blank=True)
+    lesson = models.CharField(max_length=60, db_column='Lesson') # Нужно увеличить размерность
+    experience = models.CharField(max_length=30, null=True, blank=True, db_column='Experience')
     prof_retrain = models.CharField(max_length=70, null=True, blank=True, db_column='Prof_retrain')
 
     def __str__(self):

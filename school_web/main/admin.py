@@ -1,13 +1,44 @@
 from django.contrib import admin
 from .models import Task, Teacher, Cabinet, Subject, SchoolGroup, Student, Schedule
+from django.contrib import admin
+from django.urls import path
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.utils.html import format_html
+from django.template.response import TemplateResponse
 
 
 admin.site.register(Task)
 
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
-    list_display = ['full_name', 'post', 'category', 'lesson']
-    search_fields = ['fio']
+    list_display = ['full_name', 'post', 'lesson', 'category']
+    list_filter = ['category', 'post']
+    search_fields = ['full_name']
+
+    # Используем кастомный шаблон
+    change_list_template = "admin/teachers/teacher_change_list.html"
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path('teachers-report/', self.teachers_report, name='teachers_report'),
+        ]
+        return custom_urls + urls
+
+    def teachers_report(self, request):
+        # Получаем всех преподавателей
+        teachers = Teacher.objects.all().order_by('full_name')
+
+        # Контекст для шаблона
+        context = {
+            'teachers': teachers,
+            'total_count': teachers.count(),
+            'title': 'Отчет о преподавательском составе',
+            **self.admin_site.each_context(request)
+        }
+
+        return render(request, 'admin/teachers/report_template.html', context)
 
 @admin.register(Cabinet)
 class CabinetAdmin(admin.ModelAdmin):

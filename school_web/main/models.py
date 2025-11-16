@@ -33,9 +33,23 @@ class Teacher(models.Model):
     post = models.CharField(max_length=20, db_column='Post')
     category = models.CharField(max_length=15, null=True, blank=True, db_column='Category')
     education = models.CharField(max_length=70, db_column='Education', null=True, blank=True)
-    lesson = models.CharField(max_length=60, db_column='Lesson') # Нужно увеличить размерность
+    #lesson = models.CharField(max_length=60, db_column='Lesson') # Нужно увеличить размерность
+
+    subjects = models.ManyToManyField(
+        Subject,
+        verbose_name='Предметы',
+        blank=True
+    )
+
     experience = models.CharField(max_length=30, null=True, blank=True, db_column='Experience')
     prof_retrain = models.CharField(max_length=70, null=True, blank=True, db_column='Prof_retrain')
+
+    # Метод для получения предметов в виде строки
+    def get_subjects_display(self):
+        return ", ".join([str(subject) for subject in self.subjects.all()]) or "Не указано"
+
+    get_subjects_display.short_description = 'Предметы'
+
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -92,9 +106,9 @@ class Student(models.Model):
     id = models.AutoField(primary_key=True, db_column='ID_Student')
     full_name = models.CharField(max_length=35, null=True, blank=True, db_column='FIO_Student')
     parent_name = models.CharField(max_length=35, null=True, blank=True, db_column='FIO_Parent')
-    birth_date = models.DateField(max_length=15, null=True, blank=True, db_column='Date')
-    snills = models.CharField(max_length=20, null=True, blank=True, db_column='Skills')
-    address = models.CharField(max_length=50, db_column='Address')
+    birth_date = models.DateField(null=True, blank=True, db_column='Date')
+    snills = models.CharField(max_length=20, null=True, blank=True, db_column='Snills')
+    address = models.CharField(max_length=50, db_column='Adress', default='Не указан')
     phone = models.CharField(max_length=11, db_column='Phone')
     school_class = models.ForeignKey(
         SchoolGroup,
@@ -128,11 +142,45 @@ class Schedule(models.Model):
         on_delete=models.CASCADE,
         db_column='ID_Class'
     )
+    # Добавим поля для дня недели и времени для расписания
+    day_of_week = models.PositiveSmallIntegerField(
+        choices=[(1, 'Понедельник'), (2, 'Вторник'), (3, 'Среда'),
+                 (4, 'Четверг'), (5, 'Пятница'), (6, 'Суббота')],
+        default=1
+    )
+    lesson_number = models.PositiveSmallIntegerField(default=1)  # Номер урока
+    start_time = models.TimeField(null=True, blank=True)
+    end_time = models.TimeField(null=True, blank=True)
 
     def __str__(self):
-        return f"Расписание {self.id}"
+        return f"Расписание {self.id} - {self.get_day_of_week_display()} {self.lesson_number} урок"
 
     class Meta:
         db_table = 'Schedule'
         verbose_name = 'Расписание'
         verbose_name_plural = 'Расписание'
+        ordering = ['day_of_week', 'lesson_number']
+
+
+# Связующая таблица Учитель-Предмет (Many-to-Many)
+class TeacherSubject(models.Model):
+    subject = models.ForeignKey(
+        Subject,
+        on_delete=models.CASCADE,
+        db_column='Subject'
+    )
+    teacher = models.ForeignKey(
+        Teacher,
+        on_delete=models.CASCADE,
+        db_column='ID_Teacher'
+    )
+    info = models.CharField(max_length=100, null=True, blank=True, db_column='Inf')
+
+    def __str__(self):
+        return f"{self.teacher.full_name} - {self.subject.full_name}"
+
+    class Meta:
+        db_table = 'Teacher_Subject'
+        verbose_name = 'Связь Учитель-Предмет'
+        verbose_name_plural = 'Связи Учитель-Предмет'
+        unique_together = ['subject', 'teacher']

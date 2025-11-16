@@ -1,0 +1,51 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block content %}
+<div class="module">
+    <h1>{{ title }}</h1>
+
+    <div style="margin-bottom: 20px;">
+        <p>Общее количество связей учитель-предмет: {{ teacher_subjects|length }}</p>
+    </div>
+
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background: #f5f5f5;">
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">№</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">ФИО учителя</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Должность</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Предмет</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Доп. информация</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ts in teacher_subjects %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 10px; border: 1px solid #ddd;">{{ forloop.counter }}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">{{ ts.teacher.full_name }}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">{{ ts.teacher.post }}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">{{ ts.subject.full_name }}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">{{ ts.info|default:"-" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="padding: 20px; text-align: center; border: 1px solid #ddd;">
+                    Нет данных о преподаваемых дисциплинах
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Статистика -->
+    <div style="margin-top: 30px;">
+        <h3>Статистика по учителям:</h3>
+        <ul>
+            {% for teacher in teachers_with_subjects %}
+            <li>{{ teacher.full_name }} - {{ teacher.subject_count }} предметов</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

@@ -33,6 +33,12 @@
             border-radius: 5px;
             margin-bottom: 20px;
         }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
         .teacher-table {
             width: 100%;
             border-collapse: collapse;
@@ -74,6 +80,28 @@
             color: #6c757d;
             font-style: italic;
         }
+        .subjects-list {
+            max-width: 200px;
+        }
+        .subject-tag {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 2px 6px;
+            margin: 1px;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+        .print-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -86,6 +114,25 @@
         <div class="summary">
             <h3>Общая информация:</h3>
             <p><strong>Всего преподавателей:</strong> {{ total_count }}</p>
+
+            <div class="stats-grid">
+                <div>
+                    <h4>По категориям:</h4>
+                    <ul>
+                        {% for stat in categories_stats %}
+                        <li>{{ stat.category|default:"Без категории" }}: {{ stat.count }} чел.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div>
+                    <h4>По должностям:</h4>
+                    <ul>
+                        {% for stat in posts_stats %}
+                        <li>{{ stat.post }}: {{ stat.count }} чел.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
 
         {% if teachers %}
@@ -95,11 +142,11 @@
                     <th>№</th>
                     <th>ФИО</th>
                     <th>Должность</th>
-                    <th>Предмет</th>
+                    <th>Предметы</th>
                     <th>Категория</th>
                     <th>Образование</th>
-                    <th>Проф.переподготовка</th>
                     <th>Стаж</th>
+                    <th>Проф.переподготовка</th>
                 </tr>
             </thead>
             <tbody>
@@ -108,7 +155,15 @@
                     <td>{{ forloop.counter }}</td>
                     <td><strong>{{ teacher.full_name }}</strong></td>
                     <td>{{ teacher.post|default:"—" }}</td>
-                    <td>{{ teacher.lesson|default:"—" }}</td>
+                    <td class="subjects-list">
+                        {% if teacher.subjects.all %}
+                            {% for subject in teacher.subjects.all %}
+                                <span class="subject-tag">{{ subject.full_name }}</span>
+                            {% endfor %}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
                     <td>{{ teacher.category|default:"—" }}</td>
                     <td>{{ teacher.education|default:"—" }}</td>
                     <td>{{ teacher.experience|default:"—" }}</td>
@@ -124,9 +179,12 @@
         </div>
         {% endif %}
 
-        <a href="{% url 'admin:main_teacher_changelist' %}" class="back-button">
-            ← Вернуться к списку преподавателей
-        </a>
+        <div>
+            <button onclick="window.print()" class="print-button">🖨️ Печать отчета</button>
+            <a href="{% url 'admin:main_teacher_changelist' %}" class="back-button">
+                ← Вернуться к списку преподавателей
+            </a>
+        </div>
     </div>
 </body>
 </html>

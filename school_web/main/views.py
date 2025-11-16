@@ -1,6 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from .models import Task
 from .forms import TaskForm
+
+from django.shortcuts import render
+from .models import Teacher
+
+
 
 
 def index(request):
@@ -38,3 +43,4 @@ def teacher_report(self, request):
     }
 
     return render(request, 'admin/teachers/simple_report.html', context)
+

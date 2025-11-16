@@ -2,18 +2,6 @@ from django.contrib import admin
 from .models import *
 from django.urls import path
 from django.shortcuts import render
-from django import forms
-
-
-admin.site.register(Task)
-
-class TeacherAdminForm(forms.ModelForm):
-    class Meta:
-        fields = '__all__'
-        widgets = {
-            'subjects': forms.SelectMultiple(attrs={'class': 'selector'}),
-        }
-
 
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
@@ -22,6 +10,47 @@ class TeacherAdmin(admin.ModelAdmin):
     search_fields = ['full_name', 'post', 'education']
     filter_horizontal = ['subjects']
     list_per_page = 20
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path('teachers-report/', self.teachers_report, name='teachers_report'),
+            path('subjects-teachers-report/', self.subjects_teachers_report, name='subjects_teachers_report'),
+            # НОВЫЙ ОТЧЕТ
+        ]
+        return custom_urls + urls
+
+    def subjects_teachers_report(self, request):
+
+        """Отчет по предметам и преподавателям"""
+        # Получаем все предметы с преподавателями
+        subjects = Subject.objects.all().prefetch_related('teacher_set').order_by('full_name')
+
+        # Статистика
+        total_subjects = subjects.count()
+        subjects_with_teachers = subjects.filter(teacher__isnull=False).distinct().count()
+        subjects_without_teachers = total_subjects - subjects_with_teachers
+
+        # Группируем данные для отчета
+        subject_data = []
+        for subject in subjects:
+            teachers = subject.teacher_set.all()
+            subject_data.append({
+                'subject': subject,
+                'teachers': teachers,
+                'teachers_count': teachers.count()
+            })
+
+        context = {
+            'subject_data': subject_data,
+            'total_subjects': total_subjects,
+            'subjects_with_teachers': subjects_with_teachers,
+            'subjects_without_teachers': subjects_without_teachers,
+            'title': 'Отчет по предметам и преподавателям',
+            **self.admin_site.each_context(request)
+        }
+
+        return render(request, 'admin/teachers/subjects_teachers_report.html', context)
 
     # Используем кастомный шаблон
     change_list_template = "admin/teachers/teacher_change_list.html"
@@ -35,13 +64,6 @@ class TeacherAdmin(admin.ModelAdmin):
             'fields': ('education', 'prof_retrain')
         }),
     )
-
-    def get_urls(self):
-        urls = super().get_urls()
-        custom_urls = [
-            path('teachers-report/', self.teachers_report, name='teachers_report'),
-        ]
-        return custom_urls + urls
 
     def teachers_report(self, request):
         # Получаем всех преподавателей с оптимизацией запроса

@@ -1,0 +1,19 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_urls %}
+
+{% block content %}
+<!-- Кастомные кнопки для отчетов -->
+<div class="module aligned" style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 4px;">
+    <h2 style="margin-top: 0; color: #333;">Отчеты</h2>
+
+    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+        <a href="{% url 'admin:teachers_report' %}"
+           class="button"
+           style="background: #28a745; color: white; padding: 12px 20px; text-decoration: none; border-radius: 4px; font-size: 16px;">
+            📊 Отчет о преподавательском составе
+        </a>
+       </div>
+</div>
+
+{{ block.super }}
+{% endblock %}

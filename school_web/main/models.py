@@ -1,6 +1,6 @@
 from django.db import models
 
-
+# Проверка работы бд
 class Task(models.Model):
     title = models.CharField('Название', max_length=50)
     task = models.TextField('Описание')
@@ -11,6 +11,20 @@ class Task(models.Model):
     class Meta:
         verbose_name = 'Задача'
         verbose_name_plural = 'Задачи'
+
+#Предметы
+class Subject(models.Model):
+    id = models.AutoField(primary_key=True, db_column='ID_Subject')
+    full_name = models.CharField(max_length=35, db_column='Full_name')
+    short_name = models.CharField(max_length=20, null=True, blank=True, db_column='Short_name')
+
+    def __str__(self):
+        return self.full_name
+
+    class Meta:
+        db_table = 'Subject'
+        verbose_name = 'Предмет'
+        verbose_name_plural = 'Предметы'
 
 # Таблица учитель
 class Teacher(models.Model):
@@ -23,14 +37,16 @@ class Teacher(models.Model):
     experience = models.CharField(max_length=30, null=True, blank=True, db_column='Experience')
     prof_retrain = models.CharField(max_length=70, null=True, blank=True, db_column='Prof_retrain')
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return self.full_name
+        return f"Учитель {self.full_name}"
 
     class Meta:
         db_table = 'Teacher'
         verbose_name = 'Учитель'
         verbose_name_plural = 'Учителя'
-
 
 class Cabinet(models.Model):
     id = models.AutoField(primary_key=True, db_column='ID_Cabinet')
@@ -48,19 +64,6 @@ class Cabinet(models.Model):
         db_table = 'Cabinet'
         verbose_name = 'Кабинет'
         verbose_name_plural = 'Кабинеты'
-
-class Subject(models.Model):
-    id = models.AutoField(primary_key=True, db_column='ID_Subject')
-    full_name = models.CharField(max_length=35, db_column='Full_name')
-    short_name = models.CharField(max_length=20, null=True, blank=True, db_column='Short_name')
-
-    def __str__(self):
-        return self.full_name
-
-    class Meta:
-        db_table = 'Subject'
-        verbose_name = 'Предмет'
-        verbose_name_plural = 'Предметы'
 
 class SchoolGroup(models.Model):
     id = models.AutoField(primary_key=True, db_column='ID_Class')
@@ -84,13 +87,14 @@ class SchoolGroup(models.Model):
         verbose_name = 'Класс'
         verbose_name_plural = 'Классы'
 
+# Таблица с учениками
 class Student(models.Model):
     id = models.AutoField(primary_key=True, db_column='ID_Student')
     full_name = models.CharField(max_length=35, null=True, blank=True, db_column='FIO_Student')
     parent_name = models.CharField(max_length=35, null=True, blank=True, db_column='FIO_Parent')
     birth_date = models.DateField(max_length=15, null=True, blank=True, db_column='Date')
-    skills = models.CharField(max_length=20, null=True, blank=True, db_column='Skills')
-    address = models.CharField(max_length=50, db_column='Adress')
+    snills = models.CharField(max_length=20, null=True, blank=True, db_column='Skills')
+    address = models.CharField(max_length=50, db_column='Address')
     phone = models.CharField(max_length=11, db_column='Phone')
     school_class = models.ForeignKey(
         SchoolGroup,

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #28a745;
+        }
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .summary {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .teacher-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .teacher-table th,
+        .teacher-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .teacher-table th {
+            background-color: #28a745;
+            color: white;
+            font-weight: bold;
+        }
+        .teacher-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .teacher-table tr:hover {
+            background-color: #e9ecef;
+        }
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .back-button:hover {
+            background: #545b62;
+        }
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{ title }}</h1>
+            <p>Дата формирования: {% now "d.m.Y H:i" %}</p>
+        </div>
+
+        <div class="summary">
+            <h3>Общая информация:</h3>
+            <p><strong>Всего преподавателей:</strong> {{ total_count }}</p>
+        </div>
+
+        {% if teachers %}
+        <table class="teacher-table">
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>ФИО</th>
+                    <th>Должность</th>
+                    <th>Предмет</th>
+                    <th>Категория</th>
+                    <th>Образование</th>
+                    <th>Проф.переподготовка</th>
+                    <th>Стаж</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for teacher in teachers %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><strong>{{ teacher.full_name }}</strong></td>
+                    <td>{{ teacher.post|default:"—" }}</td>
+                    <td>{{ teacher.lesson|default:"—" }}</td>
+                    <td>{{ teacher.category|default:"—" }}</td>
+                    <td>{{ teacher.education|default:"—" }}</td>
+                    <td>{{ teacher.experience|default:"—" }}</td>
+                    <td>{{ teacher.prof_retrain|default:"—" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="no-data">
+            <h3>Нет данных о преподавателях</h3>
+            <p>В базе данных не найдено записей о преподавателях.</p>
+        </div>
+        {% endif %}
+
+        <a href="{% url 'admin:main_teacher_changelist' %}" class="back-button">
+            ← Вернуться к списку преподавателей
+        </a>
+    </div>
+</body>
+</html>

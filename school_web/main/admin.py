@@ -132,6 +132,86 @@ class StudentAdmin(admin.ModelAdmin):
 
 @admin.register(Schedule)
 class ScheduleAdmin(admin.ModelAdmin):
-    list_display = ['subject', 'cabinet', 'school_class']
-    list_filter = ['school_class', 'subject']
+    list_display = [
+        'day_of_week_display',
+        'lesson_display',
+        'subject',
+        'school_class',
+        'cabinet'
+    ]
+    list_filter = ['day_of_week', 'lesson_number', 'subject', 'school_class']
+    search_fields = ['subject__full_name', 'school_class__number']
+    list_per_page = 20
 
+    def day_of_week_display(self, obj):
+        return obj.get_day_of_week_display()
+    day_of_week_display.short_description = 'День недели'
+
+    def lesson_display(self, obj):
+        return obj.get_lesson_number_display()
+    lesson_display.short_description = 'Урок'
+
+    # Поля для формы редактирования
+    fieldsets = (
+        ('Основная информация', {
+            'fields': ('day_of_week', 'lesson_number', 'info')
+        }),
+        ('Расписание', {
+            'fields': ('subject', 'school_class', 'cabinet')
+        }),
+    )
+
+
+# Список дополнительных занятий
+@admin.register(ExtraActivity)
+class ExtraActivityAdmin(admin.ModelAdmin):
+    list_display = ['name', 'activity_type', 'teacher', 'max_students', 'is_active']
+    list_filter = ['activity_type', 'is_active', 'teacher']
+    search_fields = ['name', 'description', 'teacher__full_name']
+    list_editable = ['is_active']
+
+    fieldsets = (
+        ('Основная информация', {
+            'fields': ('name', 'description', 'activity_type')
+        }),
+        ('Организация', {
+            'fields': ('teacher', 'max_students', 'is_active')
+        }),
+    )
+
+# Расписание дополнительных занятий
+@admin.register(ExtraSchedule)
+class ExtraScheduleAdmin(admin.ModelAdmin):
+    list_display = [
+        'day_of_week_display',
+        'lesson_display',
+        'activity',
+        'teacher',
+        'cabinet'
+    ]
+    list_filter = ['day_of_week', 'lesson_number', 'activity__activity_type']
+    search_fields = ['activity__name', 'cabinet__number']
+
+    def day_of_week_display(self, obj):
+        return obj.get_day_of_week_display()
+
+    day_of_week_display.short_description = 'День недели'
+
+    def lesson_display(self, obj):
+        return obj.get_lesson_number_display()
+
+    lesson_display.short_description = 'Время'
+
+    def teacher(self, obj):
+        return obj.activity.teacher
+
+    teacher.short_description = 'Преподаватель'
+
+    fieldsets = (
+        ('Расписание', {
+            'fields': ('day_of_week', 'lesson_number', 'cabinet')
+        }),
+        ('Занятие', {
+            'fields': ('activity',)
+        }),
+    )

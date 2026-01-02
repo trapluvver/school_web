@@ -16,6 +16,9 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+            min-height: 100vh;
+            padding-bottom: 120px; /* Место для подписи */
         }
         .header {
             text-align: center;
@@ -44,6 +47,8 @@
             border-collapse: collapse;
             margin-top: 20px;
             font-size: 14px;
+            margin-bottom: 40px;
+            page-break-inside: avoid;
         }
         .teacher-table th,
         .teacher-table td {
@@ -62,14 +67,132 @@
         .teacher-table tr:hover {
             background-color: #e9ecef;
         }
+        /* Новый стиль для подписи */
+        .signature-container {
+            margin-top: 60px;
+            position: relative;
+            page-break-inside: avoid;
+        }
+        .signature-block {
+            float: right;
+            text-align: left;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            border-left: 4px solid #28a745;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            width: 320px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        .signature-block:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, rgba(40, 167, 69, 0.1) 0%, rgba(40, 167, 69, 0.05) 100%);
+            border-radius: 0 10px 0 0;
+        }
+        .signature-line {
+            margin-top: 25px;
+            border-top: 1px solid #333;
+            width: 220px;
+            position: relative;
+        }
+        .signature-line:after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            right: 0;
+            width: 8px;
+            height: 8px;
+            background: #333;
+            border-radius: 50%;
+        }
+        .signature-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-top: 8px;
+            font-family: 'Georgia', serif;
+            letter-spacing: 0.5px;
+        }
+        .signature-title {
+            font-size: 13px;
+            color: #6c757d;
+            margin-top: 4px;
+            font-style: italic;
+        }
+        .signature-stamp {
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            width: 70px;
+            height: 70px;
+            border: 2px dashed #dc3545;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+        }
+        .signature-stamp:before {
+            content: 'М.П.';
+            font-size: 12px;
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .signature-label {
+            font-size: 12px;
+            color: #495057;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .signature-date {
+            font-size: 13px;
+            color: #6c757d;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #dee2e6;
+        }
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            clear: both;
+        }
+        .print-button {
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .print-button:hover {
+            background: #218838;
+        }
         .back-button {
-            display: inline-block;
-            margin-top: 20px;
             padding: 10px 20px;
             background: #6c757d;
             color: white;
             text-decoration: none;
             border-radius: 4px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .back-button:hover {
             background: #545b62;
@@ -92,15 +215,153 @@
             border-radius: 3px;
             font-size: 11px;
         }
-        .print-button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #28a745;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            margin-right: 10px;
+
+        /* Стили для печати */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                background: white;
+                font-size: 12pt;
+            }
+
+            .container {
+                max-width: 100%;
+                margin: 0;
+                padding: 15mm;
+                box-shadow: none;
+                border-radius: 0;
+                min-height: auto;
+            }
+
+            .header {
+                border-bottom: 1px solid #000;
+                margin-bottom: 20px;
+                padding-bottom: 15px;
+            }
+
+            .summary {
+                background: none;
+                border: 1px solid #ddd;
+                padding: 10px;
+                margin-bottom: 15px;
+            }
+
+            .teacher-table {
+                font-size: 10pt;
+                margin-bottom: 20px;
+            }
+
+            .teacher-table th {
+                background-color: #f0f0f0 !important;
+                color: #000 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .teacher-table tr:nth-child(even) {
+                background-color: #f9f9f9 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* Исправляем подпись для печати */
+            .signature-container {
+                margin-top: 30px;
+                page-break-inside: avoid;
+            }
+
+            .signature-block {
+                float: none;
+                position: static;
+                width: 280px;
+                margin-left: auto;
+                margin-right: 0;
+                background: white !important;
+                border: 1px solid #000;
+                box-shadow: none;
+                padding: 15px;
+                border-left: 3px solid #000;
+            }
+
+            .signature-block:before {
+                display: none;
+            }
+
+            .signature-line {
+                border-top: 1px solid #000;
+            }
+
+            .signature-stamp {
+                border: 1px dashed #000;
+                opacity: 1;
+                position: static;
+                margin-top: 15px;
+                margin-left: auto;
+                margin-right: auto;
+                float: right;
+            }
+
+            .signature-stamp:before {
+                color: #000;
+            }
+
+            /* Скрываем ненужные элементы */
+            .actions,
+            .print-button,
+            .back-button {
+                display: none !important;
+            }
+
+            /* Убираем лишние отступы */
+            .stats-grid {
+                gap: 10px;
+                margin-top: 10px;
+            }
+
+            /* Управление разрывами страниц */
+            h1, h2, h3 {
+                page-break-after: avoid;
+            }
+
+            .teacher-table {
+                page-break-inside: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            /* Оптимизация для печати */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .signature-block {
+                float: none;
+                width: 100%;
+                margin-top: 30px;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Дополнительные стили для предотвращения разрывов */
+        .no-break {
+            page-break-inside: avoid;
+        }
+
+        .break-before {
+            page-break-before: always;
+        }
+
+        .break-after {
+            page-break-after: always;
         }
     </style>
 </head>
@@ -179,12 +440,50 @@
         </div>
         {% endif %}
 
-        <div>
-            <button onclick="window.print()" class="print-button">🖨️ Печать отчета</button>
+        <!-- Обновленный блок подписи -->
+        <div class="signature-container">
+            <div class="signature-block">
+                <div class="signature-label">Подпись руководителя</div>
+                <div class="signature-line"></div>
+                <div class="signature-name">Д.Д. Лексусов</div>
+                <div class="signature-title">Директор образовательного учреждения</div>
+                <div class="signature-date">Дата: {% now "d.m.Y" %}</div>
+                <div class="signature-stamp"></div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <div class="actions">
+            <button onclick="window.print()" class="print-button">
+                <span>🖨️</span> Печать отчета
+            </button>
             <a href="{% url 'admin:main_teacher_changelist' %}" class="back-button">
-                ← Вернуться к списку преподавателей
+                <span>←</span> Вернуться к списку преподавателей
             </a>
         </div>
     </div>
+
+    <script>
+        // Дополнительный скрипт для улучшения печати
+        document.addEventListener('DOMContentLoaded', function() {
+            // Добавляем классы для управления разрывами страниц
+            const tables = document.querySelectorAll('.teacher-table');
+            tables.forEach((table, index) => {
+                if (index > 0) {
+                    table.classList.add('break-before');
+                }
+            });
+
+            // Убедимся, что подпись всегда на одной странице
+            const signatureContainer = document.querySelector('.signature-container');
+            signatureContainer.classList.add('no-break');
+
+            // Убедимся, что последняя строка таблицы не разрывается
+            const lastRow = document.querySelector('.teacher-table tbody tr:last-child');
+            if (lastRow) {
+                lastRow.classList.add('no-break');
+            }
+        });
+    </script>
 </body>
 </html>

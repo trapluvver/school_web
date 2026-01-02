@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding-bottom: 120px;
+            position: relative;
+            min-height: 100vh;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e91e63;
+        }
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .filters {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .filter-form {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .filter-select {
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            min-width: 150px;
+        }
+        .filter-button {
+            padding: 8px 20px;
+            background: #e91e63;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .filter-button:hover {
+            background: #d81b60;
+        }
+        .summary {
+            background: #fce4ec;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #e91e63;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 15px;
+        }
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e91e63;
+        }
+        .type-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .type-sport { background: #4caf50; color: white; }
+        .type-art { background: #2196f3; color: white; }
+        .type-science { background: #ff9800; color: white; }
+        .type-language { background: #9c27b0; color: white; }
+        .type-other { background: #795548; color: white; }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status-active { background: #4caf50; color: white; }
+        .status-inactive { background: #f44336; color: white; }
+        .activity-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+        .activity-table th,
+        .activity-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+        .activity-table th {
+            background-color: #e91e63;
+            color: white;
+            font-weight: bold;
+        }
+        .activity-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .activity-table tr:hover {
+            background-color: #fce4ec;
+        }
+        .schedule-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .schedule-item {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .schedule-item:last-child {
+            border-bottom: none;
+        }
+        .schedule-day {
+            font-weight: bold;
+            color: #333;
+            min-width: 100px;
+        }
+        .schedule-time {
+            color: #666;
+            min-width: 150px;
+        }
+        .schedule-cabinet {
+            color: #e91e63;
+            font-weight: bold;
+        }
+        .teacher-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .teacher-name {
+            font-weight: bold;
+            color: #333;
+        }
+        .teacher-post {
+            font-size: 12px;
+            color: #666;
+            margin-top: 3px;
+        }
+        .activity-name {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        .activity-description {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+        .max-students {
+            display: inline-block;
+            padding: 3px 10px;
+            background: #ff9800;
+            color: white;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        /* Стили для подписи */
+        .signature-container {
+            margin-top: 60px;
+            position: relative;
+        }
+        .signature-block {
+            float: right;
+            text-align: left;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            border-left: 4px solid #e91e63;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            width: 320px;
+            position: relative;
+            overflow: hidden;
+        }
+        .signature-block:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, rgba(233, 30, 99, 0.1) 0%, rgba(233, 30, 99, 0.05) 100%);
+            border-radius: 0 10px 0 0;
+        }
+        .signature-line {
+            margin-top: 25px;
+            border-top: 1px solid #333;
+            width: 220px;
+            position: relative;
+        }
+        .signature-line:after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            right: 0;
+            width: 8px;
+            height: 8px;
+            background: #333;
+            border-radius: 50%;
+        }
+        .signature-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-top: 8px;
+            font-family: 'Georgia', serif;
+            letter-spacing: 0.5px;
+        }
+        .signature-title {
+            font-size: 13px;
+            color: #6c757d;
+            margin-top: 4px;
+            font-style: italic;
+        }
+        .signature-stamp {
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            width: 70px;
+            height: 70px;
+            border: 2px dashed #dc3545;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+        }
+        .signature-stamp:before {
+            content: 'М.П.';
+            font-size: 12px;
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .signature-label {
+            font-size: 12px;
+            color: #495057;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .signature-date {
+            font-size: 13px;
+            color: #6c757d;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #dee2e6;
+        }
+
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            clear: both;
+        }
+        .back-button {
+            padding: 10px 20px;
+            background: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .back-button:hover {
+            background: #545b62;
+        }
+        .print-button {
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        @media print {
+            .actions, .filters {
+                display: none;
+            }
+            .signature-block {
+                float: none;
+                position: fixed;
+                bottom: 50px;
+                right: 50px;
+                box-shadow: none;
+                border: 1px solid #ddd;
+                background: white;
+            }
+            .signature-stamp {
+                border: 2px dashed #dc3545;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .signature-block {
+                float: none;
+                width: 100%;
+                margin-top: 30px;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .filter-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{ title }}</h1>
+            <p>Дата формирования: {% now "d.m.Y H:i" %}</p>
+        </div>
+
+        <div class="filters">
+            <form method="get" class="filter-form">
+                <div class="filter-group">
+                    <select name="activity_type" class="filter-select">
+                        <option value="all">Все типы</option>
+                        <option value="sport" {% if activity_type_filter == 'sport' %}selected{% endif %}>Спортивные</option>
+                        <option value="art" {% if activity_type_filter == 'art' %}selected{% endif %}>Творческие</option>
+                        <option value="science" {% if activity_type_filter == 'science' %}selected{% endif %}>Научные</option>
+                        <option value="language" {% if activity_type_filter == 'language' %}selected{% endif %}>Языковые</option>
+                        <option value="other" {% if activity_type_filter == 'other' %}selected{% endif %}>Другие</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <select name="is_active" class="filter-select">
+                        <option value="all">Все статусы</option>
+                        <option value="yes" {% if is_active_filter == 'yes' %}selected{% endif %}>Активные</option>
+                        <option value="no" {% if is_active_filter == 'no' %}selected{% endif %}>Неактивные</option>
+                    </select>
+                </div>
+                <button type="submit" class="filter-button">Применить фильтр</button>
+            </form>
+        </div>
+
+        <div class="summary">
+            <h3>Статистика по дополнительным занятиям:</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">{{ total_activities }}</div>
+                    <div>Всего занятий</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ active_activities }}</div>
+                    <div>Активных</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ inactive_activities }}</div>
+                    <div>Неактивных</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">
+                        {% if total_activities > 0 %}
+                            {{ active_activities|floatformat:0 }}/{{ total_activities }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </div>
+                    <div>Активность</div>
+                </div>
+            </div>
+
+            {% if type_stats %}
+            <div style="margin-top: 20px;">
+                <h4>Распределение по типам:</h4>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 10px;">
+                    {% for stat in type_stats %}
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <span class="type-badge type-{{ stat.activity_type }}">
+                                {{ stat.activity_type }}
+                            </span>
+                            <span>{{ stat.count }} занятий</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if teacher_stats %}
+            <div style="margin-top: 20px;">
+                <h4>Наиболее активные преподаватели:</h4>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 10px;">
+                    {% for stat in teacher_stats|slice:":5" %}
+                        <div style="display: flex; align-items: center; gap: 5px; background: white; padding: 8px 12px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                            <span style="font-weight: bold;">{{ stat.teacher__full_name }}</span>
+                            <span style="font-size: 12px; color: #666;">({{ stat.count }})</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if activity_data %}
+        <table class="activity-table">
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Занятие</th>
+                    <th>Преподаватель</th>
+                    <th>Тип / Статус</th>
+                    <th>Расписание</th>
+                    <th>Мест</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in activity_data %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                        <div class="activity-name">{{ data.activity.name }}</div>
+                        {% if data.activity.description %}
+                            <div class="activity-description">
+                                {{ data.activity.description|truncatewords:20 }}
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="teacher-info">
+                            <span class="teacher-name">{{ data.teacher.full_name }}</span>
+                            <span class="teacher-post">{{ data.teacher.post|default:"—" }}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="display: flex; flex-direction: column; gap: 5px;">
+                            <span class="type-badge type-{{ data.activity.activity_type }}">
+                                {{ data.activity.get_activity_type_display }}
+                            </span>
+                            <span class="status-badge status-{% if data.is_active %}active{% else %}inactive{% endif %}">
+                                {% if data.is_active %}Активно{% else %}Неактивно{% endif %}
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        {% if data.schedules %}
+                            <ul class="schedule-list">
+                                {% for schedule in data.schedules %}
+                                <li class="schedule-item">
+                                    <span class="schedule-day">{{ schedule.day }}</span>
+                                    <span class="schedule-time">{{ schedule.time }}</span>
+                                    <span class="schedule-cabinet">каб. {{ schedule.cabinet }}</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            <div style="margin-top: 5px; font-size: 12px; color: #666;">
+                                Всего занятий: {{ data.schedule_count }}
+                            </div>
+                        {% else %}
+                            <span style="color: #6c757d; font-style: italic;">Расписание не установлено</span>
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center;">
+                        <div class="max-students">
+                            {{ data.max_students }} мест
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div style="text-align: center; padding: 40px; color: #6c757d;">
+            <h3>Нет дополнительных занятий</h3>
+            <p>По выбранным фильтрам не найдено записей.</p>
+        </div>
+        {% endif %}
+
+        <!-- Блок подписи -->
+        <div class="signature-container">
+            <div class="signature-block">
+                <div class="signature-label">Подпись руководителя</div>
+                <div class="signature-line"></div>
+                <div class="signature-name">Д.Д. Лексусов</div>
+                <div class="signature-title">Директор образовательного учреждения</div>
+                <div class="signature-date">Дата: {% now "d.m.Y" %}</div>
+                <div class="signature-stamp"></div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <div class="actions">
+            <button onclick="window.print()" class="print-button">🖨️ Печать отчета</button>
+            <a href="{% url 'admin:main_teacher_changelist' %}" class="back-button">
+                ← Вернуться к списку учителей
+            </a>
+        </div>
+    </div>
+</body>
+</html>
